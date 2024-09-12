@@ -1,0 +1,35 @@
+#define trigger 13
+#define echo 12
+
+void setup() {
+  // kode pengaturan Anda, untuk dijalankan sekali;
+  
+  Serial.begin(9600); // Arduino akan bersiap untuk bertukar pesan dengan 
+  						//Serial Monitor pada kecepatan data 9600 bit per detik
+  pinMode (trigger, OUTPUT);
+  pinMode (echo, INPUT);
+  pinMode (2, OUTPUT);
+}
+
+void loop()
+{
+  // kode utama Anda, untuk dijalankan berulang kali;
+  long duration, distance; //jarak;
+  digitalWrite(trigger, LOW);
+  delayMicroseconds (2); //menunda program selama jangka waktu yang ditentukan dalam mikrodetik;
+  digitalWrite(trigger, HIGH);
+  delayMicroseconds (10);
+  digitalWrite(trigger, LOW);
+  
+  duration = pulseIn(echo, HIGH);// mengembalikan panjang pulsa dalam mikrodetik
+  distance = (duration/58); 
+  
+  Serial.print (distance); //perintah untuk menampilkan jarak pada Serial Monitor;
+  Serial.println(" cm"); //mencetak data
+  delay(100);
+  
+  if (distance>200 && distance<301) {tone (2, 1000, 200); delay (400);}
+  else if   (distance>100 && distance<201) {tone (2, 1000, 200); delay(200);}
+  else if   (distance<101) {tone (2, 1000, 200); delay(100);}
+  else {noTone (2);}
+}
